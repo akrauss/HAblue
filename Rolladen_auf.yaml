@@ -8,7 +8,8 @@ blueprint:
       name: Rolladen
       description: Dieser Rolladen wird geöffnet
       selector:
-        text:
+          entity:
+            domain: cover
     zeitplan_rolladen_arbeitstag:
       name: Zeitplan
       description: Zeitplan des Rolladens für Arbeitstage
@@ -24,7 +25,9 @@ blueprint:
       description: Dieser Wert muss überschritten werden um den Rolladen zu öffnen
       default: 40
       selector:
-        text:
+        number:
+          min: 0
+          max: 200
 trigger:
   - platform: numeric_state
     entity_id: sensor.koe11_helligkeit_30min_ha
@@ -48,7 +51,6 @@ condition:
         entity_id: !input zeitplan_rolladen
         state: "off"
 action:
-  - entity_id: !inout device_rolladen
-    type: set_position
-    position: 100
+  - service: cover.open_cover
+    entity_id: !input device_rolladen
 mode: single
