@@ -7,23 +7,24 @@ blueprint:
     device_rolladen:
       name: Rolladen
       description: Dieser Rolladen wird geöffnet
+      selector:
+        text:
     zeitplan_rolladen_arbeitstag:
       name: Zeitplan
       description: Zeitplan des Rolladens für Arbeitstage
+      selector:
+        text:
     zeitplan_rolladen:
-        name: Zeitplan
-        description: Zeitplan des Rolladens für andere Tage
+      name: Zeitplan
+      description: Zeitplan des Rolladens für andere Tage
+      selector:
+        text:
     helligkeit:
       name: Mindest Helligkeit
       description: Dieser Wert muss überschritten werden um den Rolladen zu öffnen
       default: 40
       selector:
-        number:
-          min: 1.0
-          max: 200.0
-          unit_of_measurement: Lux
-          mode: slider
-          step: 10.0
+        text:
 trigger:
   - platform: numeric_state
     entity_id: sensor.koe11_helligkeit_30min_ha
