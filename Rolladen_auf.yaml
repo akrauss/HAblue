@@ -1,54 +1,92 @@
 blueprint:
   name: Rolladen auf
-  description: Öffnet morgens einen Rolladen
-  source_url: https://github.com/akrauss/HAblue/edit/main/Rolladen_auf.yaml
+  description: Öffnet morgens einen Rolladen.
+  source_url: https://github.com/akrauss/HAblue/blob/main/Rolladen_auf.yaml
   domain: automation
   input:
     device_rolladen:
       name: Rolladen
-      description: Dieser Rolladen wird geöffnet
+      description: Dieser Rolladen wird geöffnet.
       selector:
-        text:
+        entity:
+          domain: cover
     zeitplan_rolladen_arbeitstag:
-      name: Zeitplan
+      name: Zeitplan Arbeitstag
       description: Zeitplan des Rolladens für Arbeitstage
       selector:
-        text:
+        entity:
+          domain: schedule
     zeitplan_rolladen:
       name: Zeitplan
       description: Zeitplan des Rolladens für andere Tage
       selector:
-        text:
+        entity:
+          domain: schedule
     helligkeit:
       name: Mindest Helligkeit
       description: Dieser Wert muss überschritten werden um den Rolladen zu öffnen
       default: 40
       selector:
-        text:
+        number:
+          min: 0
+          max: 999
+          unit_of_measurement: lux
+    position_open:
+      name: Position für offen
+      description: 0 ist zu, 100 ist offen
+      default: 100
+      selector:
+        number:
+          min: 0
+          max: 100
+          unit_of_measurement: "%"
 trigger:
-  - platform: numeric_state
-    entity_id: sensor.koe11_helligkeit_30min_ha
-    for:
-      hours: 0
-      minutes: 15
-      seconds: 0
-    above: !input helligkeit
-  - platform: state
-    entity_id:
-      - !input zeitplan_rolladen
-    from: "on"
-    to: "off"
+- platform: numeric_state
+  entity_id: sensor.koe11_helligkeit_30min_ha
+  for:
+    hours: 0
+    minutes: 15
+    seconds: 0
+  above: !input helligkeit
+- platform: state
+  entity_id:
+  - !input zeitplan_rolladen
+  from: 'on'
+  to: 'off'
+- platform: state
+  entity_id:
+  - !input zeitplan_rolladen_arbeitstag
+  from: 'on'
+  to: 'off'
 condition:
-  - condition: and
+  - condition: or
     conditions:
-      - condition: numeric_state
-        entity_id: sensor.koe11_helligkeit_30min_ha
-        above: !input helligkeit
-      - condition: state
-        entity_id: !input zeitplan_rolladen
-        state: "off"
+      - condition: and
+        conditions:
+        - condition: numeric_state
+          entity_id: sensor.koe11_helligkeit_30min_ha
+          above: !input helligkeit
+        - condition: state
+          entity_id: !input zeitplan_rolladen
+          state: 'off'
+        - condition: state
+          entity_id: input_boolean.koe11_arbeitstag
+          state: "off"
+      - condition: and
+        conditions:
+        - condition: numeric_state
+          entity_id: sensor.koe11_helligkeit_30min_ha
+          above: !input helligkeit
+        - condition: state
+          entity_id: !input zeitplan_rolladen_arbeitstag
+          state: 'off'
+        - condition: state
+          entity_id: input_boolean.koe11_arbeitstag
+          state: "on"
 action:
-  - entity_id: !input device_rolladen
-    type: set_position
-    position: 100
+      - service: cover.set_cover_position
+        data:
+          position: !input position_open
+        target:
+          entity_id: !input device_rolladen
 mode: single
