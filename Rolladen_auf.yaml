@@ -1,6 +1,7 @@
 blueprint:
   name: Rolladen auf
   description: Öffnet morgens einen Rolladen
+  source_url: https://github.com/akrauss/HAblue/edit/main/Rolladen_auf.yaml
   domain: automation
   input:
     device_rolladen:
