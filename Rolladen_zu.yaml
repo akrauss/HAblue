@@ -1,0 +1,67 @@
+blueprint:
+  name: Rolladen zu
+  description: Schließt abends einen Rolladen.
+  source_url: https://github.com/akrauss/HAblue/blob/main/Rolladen_zu.yaml
+  domain: automation
+  input:
+    device_rolladen:
+      name: Rolladen
+      description: Dieser Rolladen wird geöffnet.
+      selector:
+        entity:
+          domain: cover
+    helligkeit:
+      name: Mindest Helligkeit
+      description: Dieser Wert muss überschritten werden um den Rolladen zu öffnen
+      default: 40
+      selector:
+        number:
+          min: 0
+          max: 999
+          unit_of_measurement: lux
+    position_zu:
+      name: Position für zu
+      description: 0 ist zu, 100 ist offen
+      default: 0
+      selector:
+        number:
+          min: 0
+          max: 100
+          unit_of_measurement: "%"
+    nachts_lueften:
+      name: Nachts bei geöffnetem Fenster lüften
+      description: Ist das Fenster geöffnet fährt der Rolladen auf Lüstungsposition
+      default: true
+      selector:
+        boolean:
+    position_nachts_lueften:
+      name: Position für Nachts lüften
+      description: 0 ist zu, 100 ist offen
+      default: 20
+      selector:
+        number:
+          min: 0
+          max: 100
+          unit_of_measurement: "%"
+    fenster_status:
+      name: Entität des Fensters
+      description: Fenster zum Rolladen
+      selector:
+        entity:
+          device_class: window
+trigger:
+- platform: numeric_state
+  entity_id: sensor.koe11_helligkeit_30min_ha
+  for:
+    hours: 0
+    minutes: 15
+    seconds: 0
+  below: !input helligkeit
+condition:
+action:
+      - service: cover.set_cover_position
+        data:
+          position: !input position_zu
+        target:
+          entity_id: !input device_rolladen
+mode: single
