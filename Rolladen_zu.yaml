@@ -57,14 +57,14 @@ trigger:
     minutes: 15
     seconds: 0
   below: !input helligkeit
-condition:
+condition: []
 action:
   - variables:
       nachts_lueften: !input nachts_lueften
   - if:
       - condition: template
         value_template: "{{ is_state(nachts_lueften, 'on') }}"
-      - condiition: state
+      - condition: state
         entity_id: !input fenster_status
         state: "on"
     then:
