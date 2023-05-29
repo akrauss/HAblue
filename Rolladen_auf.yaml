@@ -29,28 +29,9 @@ blueprint:
           min: 0
           max: 200
 trigger:
-  - platform: numeric_state
-    entity_id: sensor.koe11_helligkeit_30min_ha
-    for:
-      hours: 0
-      minutes: 15
-      seconds: 0
-    above: !input helligkeit
-  - platform: state
-    entity_id:
-      - !input zeitplan_rolladen
-    from: "on"
-    to: "off"
+
 condition:
-  - condition: and
-    conditions:
-      - condition: numeric_state
-        entity_id: sensor.koe11_helligkeit_30min_ha
-        above: !input helligkeit
-      - condition: state
-        entity_id: !input zeitplan_rolladen
-        state: "off"
+
 action:
-  - service: cover.open_cover
-    entity_id: !input device_rolladen
+
 mode: single
