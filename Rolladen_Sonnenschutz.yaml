@@ -28,14 +28,7 @@ blueprint:
           min: 0
           max: 100
           unit_of_measurement: "%"
-trigger:
-- platform: numeric_state
-  entity_id: sensor.koe11_helligkeit_30min_ha
-  for:
-    hours: 0
-    minutes: 15
-    seconds: 0
-  below: !input helligkeit
+trigger: []
 condition: []
 action: []
 mode: single
