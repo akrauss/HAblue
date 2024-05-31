@@ -37,25 +37,5 @@ trigger:
     seconds: 0
   below: !input helligkeit
 condition: []
-action:
-  - variables:
-      nachts_lueften: !input nachts_lueften
-  - if:
-      - condition: template
-        value_template: "{{ is_state(nachts_lueften, 'on') }}"
-      - condition: state
-        entity_id: !input fenster_status
-        state: "on"
-    then:
-      - service: cover.set_cover_position
-        data:
-          position: !input position_nachts_lueften
-        target:
-          entity_id: !input device_rolladen
-    else:
-      - service: cover.set_cover_position
-        data:
-          position: !input position_zu
-        target:
-          entity_id: !input device_rolladen
+action: []
 mode: single
