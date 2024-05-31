@@ -1,0 +1,61 @@
+blueprint:
+  name: Rolladen Sonnenschutz
+  description: Schließt und öffnet am Tag um Überhitzung der Räume zu verhindern.
+  source_url: https://github.com/akrauss/HAblue/blob/main/Rolladen_Sonnenschutz.yaml
+  domain: automation
+  input:
+    device_rolladen:
+      name: Rolladen
+      description: Dieser Rolladen wird gesteuert.
+      selector:
+        entity:
+          domain: cover
+    position_schutz1:
+      name: Position für Sonnenschutz 1
+      description: 0 ist zu, 100 ist offen
+      default: 50
+      selector:
+        number:
+          min: 0
+          max: 100
+          unit_of_measurement: "%"
+    position_schutz2:
+      name: Position für Sonnenschutz 2
+      description: 0 ist zu, 100 ist offen
+      default: 80
+      selector:
+        number:
+          min: 0
+          max: 100
+          unit_of_measurement: "%"
+trigger:
+- platform: numeric_state
+  entity_id: sensor.koe11_helligkeit_30min_ha
+  for:
+    hours: 0
+    minutes: 15
+    seconds: 0
+  below: !input helligkeit
+condition: []
+action:
+  - variables:
+      nachts_lueften: !input nachts_lueften
+  - if:
+      - condition: template
+        value_template: "{{ is_state(nachts_lueften, 'on') }}"
+      - condition: state
+        entity_id: !input fenster_status
+        state: "on"
+    then:
+      - service: cover.set_cover_position
+        data:
+          position: !input position_nachts_lueften
+        target:
+          entity_id: !input device_rolladen
+    else:
+      - service: cover.set_cover_position
+        data:
+          position: !input position_zu
+        target:
+          entity_id: !input device_rolladen
+mode: single
