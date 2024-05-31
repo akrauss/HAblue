@@ -1,7 +1,7 @@
 blueprint:
   name: Rolladen Sonnenschutz
   description: Schließt und öffnet am Tag um Überhitzung der Räume zu verhindern.
-  source_url: https://github.com/akrauss/HAblue/blob/main/Rolladen_Sonnenschutz.yaml
+  source_url: https://github.com/akrauss/HAblue/raw/main/Rolladen_Sonnenschutz.yaml
   domain: automation
   input:
     device_rolladen:
