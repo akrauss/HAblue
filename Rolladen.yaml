@@ -82,16 +82,15 @@ blueprint:
               domain: scene
         elevation_min:
           name: Azimuth
-          min: 0
-          max: 90
-        azimuth_min:
-          name: Elevation Min
-          min: 0
-          max: 359
-        azimuth_max:
-          name: Elevation Max
-          min: 0
-          max: 359
+          name: Szene Sonnenschutz
+          description: Szene für Rolladen bei Sonnenschutz.
+          selector:
+            number:
+              min: 0
+              max: 360
+              step: 10
+              unit_of_measurement: "°"
+              mode: slider
 trigger:
 - platform: numeric_state
   entity_id: sensor.koe11_helligkeit_30min_ha
