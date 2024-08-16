@@ -1,0 +1,84 @@
+blueprint:
+  name: Rolladen Steuerung
+  description: Öffnet morgens einen Rolladen.
+  source_url: https://github.com/akrauss/HAblue/blob/main/Rolladen.yaml
+  domain: automation
+  input:
+    szene_rolladen_tag:
+      name: Szene Tag
+      description: Szene für Rolladen am Tag.
+      selector:
+        entity:
+          domain: scene
+    zeitplan_rolladen_arbeitstag:
+      name: Zeitplan Arbeitstag
+      description: Zeitplan des Rolladens für Arbeitstage
+      selector:
+        entity:
+          domain: schedule
+    zeitplan_rolladen:
+      name: Zeitplan
+      description: Zeitplan des Rolladens für andere Tage
+      selector:
+        entity:
+          domain: schedule
+    helligkeit:
+      name: Mindest Helligkeit
+      description: Dieser Wert muss überschritten werden um den Rolladen zu öffnen
+      default: 40
+      selector:
+        number:
+          min: 0
+          max: 999
+          unit_of_measurement: lux
+trigger:
+- platform: numeric_state
+  entity_id: sensor.koe11_helligkeit_30min_ha
+  for:
+    hours: 0
+    minutes: 15
+    seconds: 0
+  above: !input helligkeit
+- platform: state
+  entity_id:
+  - !input zeitplan_rolladen
+  from: 'on'
+  to: 'off'
+- platform: state
+  entity_id:
+  - !input zeitplan_rolladen_arbeitstag
+  from: 'on'
+  to: 'off'
+condition: []
+action:
+  - if:
+    - condition: or
+      conditions:
+      - condition: and
+        conditions:
+        - condition: numeric_state
+          entity_id: sensor.koe11_helligkeit_30min_ha
+          above: !input helligkeit
+        - condition: state
+          entity_id: !input zeitplan_rolladen
+          state: 'off'
+        - condition: state
+          entity_id: input_boolean.koe11_arbeitstag
+          state: "off"
+      - condition: and
+        conditions:
+        - condition: numeric_state
+          entity_id: sensor.koe11_helligkeit_30min_ha
+          above: !input helligkeit
+        - condition: state
+          entity_id: !input zeitplan_rolladen_arbeitstag
+          state: 'off'
+        - condition: state
+          entity_id: input_boolean.koe11_arbeitstag
+          state: "on"
+    then:
+      - service: scene.turn_on
+        target:
+          entity_id: !inout.szene_rolladen_tag
+        data: {}
+mode: single
