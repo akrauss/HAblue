@@ -80,24 +80,24 @@ blueprint:
           selector:
             entity:
               domain: scene
-        elevation_min:
-          min: 0
-          max: 90
-          step: 1
-          unit_of_measurement: "Grad"
-          mode: slider
-        azimuth_min:
-          min: 0
-          max: 359
-          step: 1
-          unit_of_measurement: "Grad"
-          mode: slider
-        azimuth_max:
-          min: 0
-          max: 359
-          step: 1
-          unit_of_measurement: "Grad"
-          mode: slider
+#        elevation_min:
+#          min: 0
+#          max: 90
+#          step: 1
+#          unit_of_measurement: "Grad"
+#          mode: slider
+#        azimuth_min:
+#          min: 0
+#          max: 359
+#         step: 1
+#         unit_of_measurement: "Grad"
+#         mode: slider
+#       azimuth_max:
+#         min: 0
+#         max: 359
+#         step: 1
+#         unit_of_measurement: "Grad"
+#         mode: slider
 trigger:
 - platform: numeric_state
   entity_id: sensor.koe11_helligkeit_30min_ha
