@@ -80,6 +80,24 @@ blueprint:
           selector:
             entity:
               domain: scene
+        elevation_min:
+          min: 0
+          max: 90
+          step: 1
+          unit_of_measurement: "°"
+          mode: slider
+        azimuth_min:
+          min: 0
+          max: 359
+          step: 1
+          unit_of_measurement: "°"
+          mode: slider
+        azimuth_max:
+          min: 0
+          max: 359
+          step: 1
+          unit_of_measurement: "°"
+          mode: slider
 
 trigger:
 - platform: numeric_state
@@ -96,6 +114,37 @@ trigger:
     minutes: 15
     seconds: 0
   below: !input helligkeit_nacht
+- platform: numeric_state
+  entity_id:
+    - sensor.dwd_speyer_forcast_today_temperature
+  for:
+    hours: 0
+    minutes: 15
+    seconds: 0
+  above: input_number.koe11_rolladen_temperatur_vorhersage_sonnenschutz
+- platform: numeric_state
+  entity_id:
+    - sensor.koe11_weewx_aussentemperatur
+  for:
+    hours: 0
+    minutes: 15
+    seconds: 0
+  above: input_number.koe11_rolladen_temperatur_sonnenschutz  
+- platform: numeric_state
+  entity_id:
+    - sun.sun
+  attribute: elevation
+  above: !input elevation_min
+- platform: numeric_state
+  entity_id:
+    - sun.sun
+  attribute: azimuth
+  above: !input azimuth_min
+- platform: numeric_state
+  entity_id:
+    - sun.sun
+  attribute: elevation
+  below: !input azimuth_max
 - platform: state
   entity_id:
   - !input zeitplan_rolladen
@@ -116,10 +165,41 @@ trigger:
   - !input fenster_status
   from: 'off'
   to: 'on'
-  
+
 
 condition: []
 action:
+
+## Sonnenschutz
+
+  - if:
+      - condition: or
+        conditions:
+          - condition: numeric_state
+            entity_id: sensor.dwd_speyer_forcast_today_temperature
+            above: input_number.koe11_rolladen_temperatur_vorhersage_sonnenschutz
+          - condition: numeric_state
+            entity_id: sensor.koe11_weewx_aussentemperatur
+            above: input_number.koe11_rolladen_temperatur_sonnenschutz
+        alias: Testen ob eine Temperatur überschritten
+      - condition: numeric_state
+        entity_id: sun.sun
+        attribute: elevation
+        above: 10
+      - condition: numeric_state
+        entity_id: sun.sun
+        attribute: elevation
+        above: 100
+      - condition: numeric_state
+        entity_id: sun.sun
+        attribute: elevation
+        below: 260
+    then:
+      - service: scene.turn_on
+        target:
+          entity_id: !input szene_rolladen_sonnenschutz
+        data: {}
+      - stop: "Tag, beende Automation"  
 
 ## Tag
 
