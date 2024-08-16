@@ -84,20 +84,14 @@ blueprint:
           name: Azimuth
           min: 0
           max: 90
-          step: 5
-          mode: slider
         azimuth_min:
           name: Elevation Min
           min: 0
           max: 359
-          step: 5
-          mode: slider
         azimuth_max:
           name: Elevation Max
           min: 0
           max: 359
-          step: 5
-          mode: slider
 trigger:
 - platform: numeric_state
   entity_id: sensor.koe11_helligkeit_30min_ha
