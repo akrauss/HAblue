@@ -4,19 +4,13 @@ blueprint:
   source_url: https://github.com/akrauss/HAblue/blob/main/Rolladen.yaml
   domain: automation
   input:
-    tagnacht_section:
-      name: Tag/Nacht
-      description: Einstellungen für Tag/Nacht-Umschaltung.
+    tag_section:
+      name: Tag
+      description: Einstellungen für Tag.
       input:
         szene_rolladen_tag:
           name: Szene Tag
           description: Szene für Rolladen am Tag.
-          selector:
-            entity:
-              domain: scene
-        szene_rolladen_nacht:
-          name: Szene Nacht
-          description: Szene für Rolladen in der Nacht.
           selector:
             entity:
               domain: scene
@@ -32,7 +26,7 @@ blueprint:
           selector:
             entity:
               domain: schedule
-        helligkeit:
+        helligkeit_tag:
           name: Mindest Helligkeit
           description: Dieser Wert muss überschritten werden um den Rolladen zu öffnen
           default: 40
@@ -41,6 +35,29 @@ blueprint:
               min: 0
               max: 999
               unit_of_measurement: lux
+    tag_section:
+      name: Tag
+      description: Einstellungen für Tag.
+      input:
+        szene_rolladen_nacht:
+          name: Szene Nacht
+          description: Szene für Rolladen in der Nacht.
+          selector:
+            entity:
+              domain: scene
+        helligkeit_nacht:
+          name: Maximal Helligkeit
+          description: Dieser Wert muss unterschritten werden um den Rolladen zu schließen
+          default: 40
+          selector:
+            number:
+              min: 0
+              max: 999
+              unit_of_measurement: lux
+
+
+
+
     lueften_section:
       name: Lüftung
       description: Nachts Lüften, wenn Fenster offen.
@@ -75,14 +92,14 @@ trigger:
     hours: 0
     minutes: 15
     seconds: 0
-  above: !input helligkeit
+  above: !input helligkeit_tag
 - platform: numeric_state
   entity_id: sensor.koe11_helligkeit_30min_ha
   for:
     hours: 0
     minutes: 15
     seconds: 0
-  below: !input helligkeit
+  below: !input helligkeit_nacht
 - platform: state
   entity_id:
   - !input zeitplan_rolladen
@@ -105,7 +122,7 @@ action:
         conditions:
         - condition: numeric_state
           entity_id: sensor.koe11_helligkeit_30min_ha
-          above: !input helligkeit
+          above: !input helligkeit_tag
         - condition: state
           entity_id: !input zeitplan_rolladen
           state: 'off'
@@ -116,7 +133,7 @@ action:
         conditions:
         - condition: numeric_state
           entity_id: sensor.koe11_helligkeit_30min_ha
-          above: !input helligkeit
+          above: !input helligkeit_tag
         - condition: state
           entity_id: !input zeitplan_rolladen_arbeitstag
           state: 'off'
@@ -135,7 +152,7 @@ action:
   - if:
     - condition: numeric_state
       entity_id: sensor.koe11_helligkeit_30min_ha
-      below: !input helligkeit
+      below: !input helligkeit_nacht
     - condition: state
       entity_id: input_boolean.koe11_nachts_luften
       state: "on"
@@ -154,7 +171,7 @@ action:
   - if:
     - condition: numeric_state
       entity_id: sensor.koe11_helligkeit_30min_ha
-      below: !input helligkeit
+      below: !input helligkeit_nacht
     then:
       - service: scene.turn_on
         target:
