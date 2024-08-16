@@ -85,21 +85,18 @@ blueprint:
           min: 0
           max: 90
           step: 1
-          unit_of_measurement: "Grad"
           mode: slider
         azimuth_min:
           name: Elevation Min
           min: 0
           max: 359
           step: 1
-          unit_of_measurement: "Grad"
           mode: slider
         azimuth_max:
           name: Elevation Max
           min: 0
           max: 359
           step: 1
-          unit_of_measurement: "Grad"
           mode: slider
 trigger:
 - platform: numeric_state
