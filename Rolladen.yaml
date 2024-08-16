@@ -84,19 +84,19 @@ blueprint:
           min: 0
           max: 90
           step: 1
-          unit_of_measurement: "°"
+          unit_of_measurement: "Grad"
           mode: slider
         azimuth_min:
           min: 0
           max: 359
           step: 1
-          unit_of_measurement: "°"
+          unit_of_measurement: "Grad"
           mode: slider
         azimuth_max:
           min: 0
           max: 359
           step: 1
-          unit_of_measurement: "°"
+          unit_of_measurement: "Grad"
           mode: slider
 trigger:
 - platform: numeric_state
