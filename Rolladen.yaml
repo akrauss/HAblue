@@ -190,7 +190,7 @@ action:
         above: !input elevation_min
       - condition: numeric_state
         entity_id: !input hausseite
-        above: !input azimuth_diff
+        below: !input azimuth_diff
     then:
       - service: scene.turn_on
         target:
