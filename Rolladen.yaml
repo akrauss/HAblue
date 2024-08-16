@@ -16,8 +16,14 @@ blueprint:
       selector:
         entity:
           domain: scene
+    nachts_lueften:
+      name: Nachts bei geöffnetem Fenster lüften
+      description: Ist das Fenster geöffnet fährt der Rolladen auf Lüstungsposition
+      default: true
+      selector:
+        boolean:
     szene_rolladen_nacht_lueften:
-      name: Szene Nacht
+      name: Szene Nacht Lüften
       description: Szene für Rolladen mit Lüften in der Nacht.
       selector:
         entity:
