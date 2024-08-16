@@ -80,6 +80,22 @@ blueprint:
           selector:
             entity:
               domain: scene
+        hausseite:
+          name: Sonnenposition Hausseite
+          description: Relativer Winkel der Sonner zur Hausseite.
+          selector:
+            entity:
+        azimuth_diff:
+          name: Azimuth Differenz
+          description: Position der Sonne relativ zur Hausseite maximal.
+          default: 100
+          selector:
+            number:
+              min: 0
+              max: 100
+              step: 5
+              unit_of_measurement: "°"
+              mode: slider
         elevation_min:
           name: Elevation Min
           description: Mindesthöhe der Sonne über Horizont.
@@ -89,28 +105,6 @@ blueprint:
               min: 0
               max: 90
               step: 5
-              unit_of_measurement: "°"
-              mode: slider
-        azimuth_min:
-          name: Azimuth Min
-          description: Position der Sonne mindestens.
-          default: 100
-          selector:
-            number:
-              min: 0
-              max: 360
-              step: 10
-              unit_of_measurement: "°"
-              mode: slider
-        azimuth_max:
-          name: Azimuth Max
-          description: Position der Sonne maximal.
-          default: 180
-          selector:
-            number:
-              min: 0
-              max: 360
-              step: 10
               unit_of_measurement: "°"
               mode: slider
 trigger:
@@ -151,9 +145,8 @@ trigger:
   above: !input elevation_min
 - platform: numeric_state
   entity_id:
-    - sun.sun
-  attribute: azimuth
-  above: !input azimuth_min
+    - !input hausseite
+  below: !input azimuth_diff
 - platform: numeric_state
   entity_id:
     - sun.sun
@@ -201,13 +194,8 @@ action:
         attribute: elevation
         above: !input elevation_min
       - condition: numeric_state
-        entity_id: sun.sun
-        attribute: elevation
-        above: !input azimuth_min
-      - condition: numeric_state
-        entity_id: sun.sun
-        attribute: elevation
-        below: !input azimuth_max
+        entity_id: !input hausseite
+        above: !input azimuth_diff
     then:
       - service: scene.turn_on
         target:
