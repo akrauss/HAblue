@@ -6,7 +6,7 @@ blueprint:
   input:
     szene_rolladen_tag:
       name: Szene Tag
-      description: Szene für Rolladen am Tag.
+      description: Szene für Rolladen am Tag. TestTEst
       selector:
         entity:
           domain: scene
@@ -79,6 +79,6 @@ action:
     then:
       - service: scene.turn_on
         target:
-          entity_id: !inout.szene_rolladen_tag
+          entity_id: !input.szene_rolladen_tag
         data: {}
 mode: single
