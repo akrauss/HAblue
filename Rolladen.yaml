@@ -36,8 +36,8 @@ blueprint:
               max: 999
               unit_of_measurement: lux
     nacht_section:
-      name: Tag
-      description: Einstellungen für Tag.
+      name: Nacht
+      description: Einstellungen für Nacht.
       input:
         szene_rolladen_nacht:
           name: Szene Nacht
