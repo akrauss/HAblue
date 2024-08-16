@@ -90,6 +90,7 @@ blueprint:
               step: 5
               unit_of_measurement: "°"
               mode: slider
+              default: 5
         azimuth_min:
           name: Azimuth Min
           description: Position der Sonne mindestens.
@@ -100,6 +101,7 @@ blueprint:
               step: 10
               unit_of_measurement: "°"
               mode: slider
+              default: 100
         azimuth_max:
           name: Azimuth Max
           description: Position der Sonne maximal.
@@ -110,6 +112,7 @@ blueprint:
               step: 10
               unit_of_measurement: "°"
               mode: slider
+              default: 180
 trigger:
 - platform: numeric_state
   entity_id: sensor.koe11_helligkeit_30min_ha
