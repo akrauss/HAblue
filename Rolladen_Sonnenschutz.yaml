@@ -1,0 +1,34 @@
+blueprint:
+  name: Rolladen Sonnenschutz
+  description: Schließt und öffnet am Tag um Überhitzung der Räume zu verhindern.
+  source_url: https://github.com/akrauss/HAblue/blob/main/Rolladen_Sonnenschutz.yaml
+  domain: automation
+  input:
+    device_rolladen:
+      name: Rolladen
+      description: Dieser Rolladen wird gesteuert.
+      selector:
+        entity:
+          domain: cover
+    position_schutz1:
+      name: Position für Sonnenschutz 1
+      description: 0 ist zu, 100 ist offen
+      default: 50
+      selector:
+        number:
+          min: 0
+          max: 100
+          unit_of_measurement: "%"
+    position_schutz2:
+      name: Position für Sonnenschutz 2
+      description: 0 ist zu, 100 ist offen
+      default: 80
+      selector:
+        number:
+          min: 0
+          max: 100
+          unit_of_measurement: "%"
+trigger: []
+condition: []
+action: []
+mode: single
