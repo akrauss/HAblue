@@ -106,6 +106,18 @@ trigger:
   - !input zeitplan_rolladen_arbeitstag
   from: 'on'
   to: 'off'
+- platform: state
+  entity_id:
+  - !input fenster_status
+  from: 'on'
+  to: 'off'
+- platform: state
+  entity_id:
+  - !input fenster_status
+  from: 'off'
+  to: 'on'
+  
+
 condition: []
 action:
 
