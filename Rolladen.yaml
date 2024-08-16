@@ -48,16 +48,12 @@ blueprint:
         helligkeit_nacht:
           name: Maximal Helligkeit
           description: Dieser Wert muss unterschritten werden um den Rolladen zu schließen
-          default: 40
+          default: 30
           selector:
             number:
               min: 0
               max: 999
               unit_of_measurement: lux
-
-
-
-
     lueften_section:
       name: Lüftung
       description: Nachts Lüften, wenn Fenster offen.
