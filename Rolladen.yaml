@@ -1,12 +1,24 @@
 blueprint:
   name: Rolladen Steuerung
-  description: Öffnet morgens einen Rolladen.
+  description: Steuert den Rolladen in einem Raum.
   source_url: https://github.com/akrauss/HAblue/blob/main/Rolladen.yaml
   domain: automation
   input:
     szene_rolladen_tag:
       name: Szene Tag
-      description: Szene für Rolladen am Tag. TestTEst
+      description: Szene für Rolladen am Tag.
+      selector:
+        entity:
+          domain: scene
+    szene_rolladen_nacht:
+      name: Szene Nacht
+      description: Szene für Rolladen in der Nacht.
+      selector:
+        entity:
+          domain: scene
+    szene_rolladen_nacht_lueften:
+      name: Szene Nacht
+      description: Szene für Rolladen mit Lüften in der Nacht.
       selector:
         entity:
           domain: scene
@@ -31,6 +43,18 @@ blueprint:
           min: 0
           max: 999
           unit_of_measurement: lux
+    nachts_lueften:
+      name: Nachts bei geöffnetem Fenster lüften
+      description: Ist das Fenster geöffnet fährt der Rolladen auf Lüstungsposition
+      default: true
+      selector:
+        boolean:
+    fenster_status:
+      name: Entität der Fenster im Raum
+      description: Fenster zum Rolladen
+      selector:
+        entity:
+          device_class: window
 trigger:
 - platform: numeric_state
   entity_id: sensor.koe11_helligkeit_30min_ha
@@ -39,6 +63,13 @@ trigger:
     minutes: 15
     seconds: 0
   above: !input helligkeit
+- platform: numeric_state
+  entity_id: sensor.koe11_helligkeit_30min_ha
+  for:
+    hours: 0
+    minutes: 15
+    seconds: 0
+  below: !input helligkeit
 - platform: state
   entity_id:
   - !input zeitplan_rolladen
@@ -51,6 +82,11 @@ trigger:
   to: 'off'
 condition: []
 action:
+  - variables:
+      nachts_lueften: !input nachts_lueften
+
+## Tag
+
   - if:
     - condition: or
       conditions:
@@ -81,4 +117,37 @@ action:
         target:
           entity_id: !input szene_rolladen_tag
         data: {}
+      - stop: "Tag, beende Automation"  
+
+## Nacht mit Lüften
+
+  - if:
+    - condition: numeric_state
+      entity_id: sensor.koe11_helligkeit_30min_ha
+      below: !input helligkeit
+    - condition: template
+      value_template: "{{ is_state(nachts_lueften, 'on') }}"
+    - condition: state
+      entity_id: !input fenster_status
+      state: "on"
+    then:
+      - service: scene.turn_on
+        target:
+          entity_id: !input szene_rolladen_nacht_lueften
+        data: {}
+      - stop: "Nacht mit Lüften, beende Automation"  
+
+## Nacht 
+
+  - if:
+    - condition: numeric_state
+      entity_id: sensor.koe11_helligkeit_30min_ha
+      below: !input helligkeit
+    then:
+      - service: scene.turn_on
+        target:
+          entity_id: !input szene_rolladen_nacht
+        data: {}
+      - stop: "Nacht, beende Automation"  
+
 mode: single
