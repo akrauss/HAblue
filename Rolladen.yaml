@@ -147,11 +147,6 @@ trigger:
   entity_id:
     - !input hausseite
   below: !input azimuth_diff
-- platform: numeric_state
-  entity_id:
-    - sun.sun
-  attribute: elevation
-  below: !input azimuth_max
 - platform: state
   entity_id:
   - !input zeitplan_rolladen
