@@ -81,14 +81,33 @@ blueprint:
             entity:
               domain: scene
         elevation_min:
-          name: Azimuth
-          name: Szene Sonnenschutz
-          description: Szene für Rolladen bei Sonnenschutz.
+          name: Elevation Min
+          description: Mindesthöhe der Sonne über Horizont.
+          selector:
+            number:
+              min: 0
+              max: 90
+              step: 5
+              unit_of_measurement: "°"
+              mode: slider
+        azimuth_min:
+          name: Azimuth Min
+          description: Position der Sonne (Grad) mindestens.
           selector:
             number:
               min: 0
               max: 360
-              step: 10
+              step: 5
+              unit_of_measurement: "°"
+              mode: slider
+        azimuth_max:
+          name: Azimuth Max
+          description: Position der Sonne (Grad) maximal.
+          selector:
+            number:
+              min: 0
+              max: 360
+              step: 5
               unit_of_measurement: "°"
               mode: slider
 trigger:
