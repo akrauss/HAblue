@@ -79,6 +79,6 @@ action:
     then:
       - service: scene.turn_on
         target:
-          entity_id: !input.szene_rolladen_tag
+          entity_id: !input szene_rolladen_tag
         data: {}
 mode: single
