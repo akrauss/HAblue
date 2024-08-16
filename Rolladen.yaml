@@ -35,7 +35,7 @@ blueprint:
               min: 0
               max: 999
               unit_of_measurement: lux
-    tag_section:
+    nacht_section:
       name: Tag
       description: Einstellungen für Tag.
       input:
