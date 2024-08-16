@@ -83,6 +83,7 @@ blueprint:
         elevation_min:
           name: Elevation Min
           description: Mindesthöhe der Sonne über Horizont.
+          default: 5
           selector:
             number:
               min: 0
@@ -90,10 +91,10 @@ blueprint:
               step: 5
               unit_of_measurement: "°"
               mode: slider
-              default: 5
         azimuth_min:
           name: Azimuth Min
           description: Position der Sonne mindestens.
+          default: 100
           selector:
             number:
               min: 0
@@ -101,10 +102,10 @@ blueprint:
               step: 10
               unit_of_measurement: "°"
               mode: slider
-              default: 100
         azimuth_max:
           name: Azimuth Max
           description: Position der Sonne maximal.
+          default: 180
           selector:
             number:
               min: 0
@@ -112,7 +113,6 @@ blueprint:
               step: 10
               unit_of_measurement: "°"
               mode: slider
-              default: 180
 trigger:
 - platform: numeric_state
   entity_id: sensor.koe11_helligkeit_30min_ha
