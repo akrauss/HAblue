@@ -98,7 +98,6 @@ blueprint:
           step: 1
           unit_of_measurement: "°"
           mode: slider
-
 trigger:
 - platform: numeric_state
   entity_id: sensor.koe11_helligkeit_30min_ha
@@ -185,21 +184,21 @@ action:
       - condition: numeric_state
         entity_id: sun.sun
         attribute: elevation
-        above: 10
+        above: !input elevation_min
       - condition: numeric_state
         entity_id: sun.sun
         attribute: elevation
-        above: 100
+        above: !input azimuth_min
       - condition: numeric_state
         entity_id: sun.sun
         attribute: elevation
-        below: 260
+        below: !input azimuth_max
     then:
       - service: scene.turn_on
         target:
           entity_id: !input szene_rolladen_sonnenschutz
         data: {}
-      - stop: "Tag, beende Automation"  
+      - stop: "Sonnenschutz, beende Automation"  
 
 ## Tag
 
