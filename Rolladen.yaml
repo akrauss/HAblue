@@ -130,7 +130,7 @@ trigger:
   below: !input helligkeit_nacht
 - platform: numeric_state
   entity_id:
-    - sensor.dwd_speyer_forcast_today_temperature
+    - sensor.dwd_speyer_temperatur_max_today
   for:
     hours: 0
     minutes: 15
@@ -190,7 +190,7 @@ action:
       - condition: or
         conditions:
           - condition: numeric_state
-            entity_id: sensor.dwd_speyer_forcast_today_temperature
+            entity_id: sensor.dwd_speyer_temperatur_max_today
             above: input_number.koe11_rolladen_temperatur_vorhersage_sonnenschutz
           - condition: numeric_state
             entity_id: sensor.koe11_weewx_aussentemperatur
