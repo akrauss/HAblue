@@ -167,6 +167,24 @@ trigger:
   - !input fenster_status
   from: 'off'
   to: 'on'
+- platform: state
+  entity_id:
+  - binary_sensor.koe11_rolladen_bewolkt_sonnenschutz
+  from: 'off'
+  to: 'on'
+  for:
+    hours: 0
+    minutes: 15
+    seconds: 0
+- platform: state
+  entity_id:
+  - binary_sensor.koe11_rolladen_bewolkt_sonnenschutz
+  from: 'on'
+  to: 'of'
+  for:
+    hours: 0
+    minutes: 15
+    seconds: 0
 
 
 condition: []
@@ -191,6 +209,9 @@ action:
       - condition: numeric_state
         entity_id: !input hausseite
         below: !input azimuth_diff
+      - condition: state
+        entity_id: binary_sensor.koe11_rolladen_bewolkt_sonnenschutz
+        state: "off"  
     then:
       - service: scene.turn_on
         target:
