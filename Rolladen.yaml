@@ -147,6 +147,10 @@ trigger:
   entity_id:
     - !input hausseite
   below: !input azimuth_diff
+- platform: numeric_state
+  entity_id:
+    - !input hausseite
+  above: !input azimuth_diff
 - platform: state
   entity_id:
   - !input zeitplan_rolladen
