@@ -145,6 +145,11 @@ trigger:
   above: !input elevation_min
 - platform: numeric_state
   entity_id:
+    - sun.sun
+  attribute: elevation
+  below: !input elevation_min
+- platform: numeric_state
+  entity_id:
     - !input hausseite
   below: !input azimuth_diff
 - platform: numeric_state
