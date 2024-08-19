@@ -180,7 +180,7 @@ trigger:
   entity_id:
   - binary_sensor.koe11_rolladen_bewolkt_sonnenschutz
   from: 'on'
-  to: 'of'
+  to: 'off'
   for:
     hours: 0
     minutes: 15
