@@ -199,6 +199,38 @@ trigger:
 condition: []
 action:
 
+## Nacht mit Lüften
+
+  - if:
+    - condition: numeric_state
+      entity_id: sensor.koe11_helligkeit_30min_ha
+      below: !input helligkeit_nacht
+    - condition: state
+      entity_id: input_boolean.koe11_nachts_luften
+      state: "on"
+    - condition: state
+      entity_id: !input fenster_status
+      state: "on"
+    then:
+      - service: scene.turn_on
+        target:
+          entity_id: !input szene_rolladen_nacht_lueften
+        data: {}
+      - stop: "Nacht mit Lüften, beende Automation"  
+
+## Nacht 
+
+  - if:
+    - condition: numeric_state
+      entity_id: sensor.koe11_helligkeit_30min_ha
+      below: !input helligkeit_nacht
+    then:
+      - service: scene.turn_on
+        target:
+          entity_id: !input szene_rolladen_nacht
+        data: {}
+      - stop: "Nacht, beende Automation"  
+      
 ## Sonnenschutz
 
   - if:
@@ -261,37 +293,5 @@ action:
           entity_id: !input szene_rolladen_tag
         data: {}
       - stop: "Tag, beende Automation"  
-
-## Nacht mit Lüften
-
-  - if:
-    - condition: numeric_state
-      entity_id: sensor.koe11_helligkeit_30min_ha
-      below: !input helligkeit_nacht
-    - condition: state
-      entity_id: input_boolean.koe11_nachts_luften
-      state: "on"
-    - condition: state
-      entity_id: !input fenster_status
-      state: "on"
-    then:
-      - service: scene.turn_on
-        target:
-          entity_id: !input szene_rolladen_nacht_lueften
-        data: {}
-      - stop: "Nacht mit Lüften, beende Automation"  
-
-## Nacht 
-
-  - if:
-    - condition: numeric_state
-      entity_id: sensor.koe11_helligkeit_30min_ha
-      below: !input helligkeit_nacht
-    then:
-      - service: scene.turn_on
-        target:
-          entity_id: !input szene_rolladen_nacht
-        data: {}
-      - stop: "Nacht, beende Automation"  
 
 mode: single
